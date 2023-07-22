@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity 0.8.18;
 
 import "forge-std/Test.sol";
 import "../src/PetPark.sol";
@@ -26,8 +26,9 @@ contract PetParkTest is Test, PetPark {
     }
 
     function testCannotAddAnimalWhenNonOwner() public {
-        // 1. Complete this test and remove the assert line below
-        assert(false);
+        vm.prank(testPrimaryAccount);
+        vm.expectRevert("Ownable: caller is not the owner");
+        petPark.add(AnimalType.None, 5);
     }
 
     function testCannotAddInvalidAnimal() public {
@@ -43,8 +44,9 @@ contract PetParkTest is Test, PetPark {
     }
 
     function testCannotBorrowWhenAgeZero() public {
-        // 2. Complete this test and remove the assert line below
-        assert(false);
+        vm.expectRevert("Age must be greater than 0");
+
+        petPark.borrow(0, Gender.Male, AnimalType.Fish);
     }
 
     function testCannotBorrowUnavailableAnimal() public {
@@ -127,8 +129,13 @@ contract PetParkTest is Test, PetPark {
     }
 
     function testBorrowCountDecrement() public {
-        // 3. Complete this test and remove the assert line below
-        assert(false);
+        petPark.add(AnimalType.Fish, 5);
+        uint currentPetCount = petPark.animalCounts(AnimalType.Fish);
+
+        petPark.borrow(24, Gender.Male, AnimalType.Fish);
+        uint reducedPetCount = petPark.animalCounts(AnimalType.Fish);
+
+		assertEq(reducedPetCount, currentPetCount - 1);
     }
 
     function testCannotGiveBack() public {
