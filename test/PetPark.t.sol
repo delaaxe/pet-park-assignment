@@ -9,16 +9,13 @@ contract PetParkTest is Test, PetPark {
     PetPark petPark;
     
     address testOwnerAccount;
-
     address testPrimaryAccount;
-    address testSecondaryAccount;
 
     function setUp() public {
         petPark = new PetPark();
 
         testOwnerAccount = msg.sender;
         testPrimaryAccount = address(0xABCD);
-        testSecondaryAccount = address(0xABDC);
     }
 
     function testOwnerCanAddAnimal() public {
